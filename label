@@ -7,15 +7,15 @@ function print_error()
     printf "%s\n" "$*" 1>&2
 }
 
-target=$1
+target="$1"
 shift
-label=$1
+label="$1"
 shift
 
-if [ ! -e $target ]; then
+if [ ! -e "$target" ]; then
     print_error "target file: ${target}, does not exist"
     exit 1
 fi
 
-mkdir -p $label
-ln $target $label
+mkdir -p "$label"
+ln "$target" "$label"
