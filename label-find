@@ -34,6 +34,7 @@ while [[ $# -gt 0 ]]; do
 	    shift
 	    if [[ $# -eq 0 ]]; then
 		print_error 'fatal: -label expression missing parameter'
+		exit 1
 	    fi
 
 	    label=$1
