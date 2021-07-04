@@ -1,0 +1,48 @@
+#!/bin/env bash
+
+set -e
+
+# Command line utility to aid in finding files given a label expresion
+
+
+# [starting points] [expression]
+# -label
+
+function print_error()
+{
+    printf "%s\n" "$*" 1>&2
+}
+
+starting_points=()
+
+# parse starting points
+while [[ $# -gt 0 ]]; do
+    if [[ ${1::1} == '-' ]]; then
+	# finished parsing starting points
+	break
+    fi
+
+    starting_points+=("$1")
+    shift
+done
+
+# parse expressions
+while [[ $# -gt 0 ]]; do
+    param="$1"
+    case $param in
+	-label)
+	    shift
+	    if [[ $# -eq 0 ]]; then
+		print_error 'fatal: -label expression missing parameter'
+	    fi
+
+	    label=$1
+	    shift
+	    ;;
+	*)
+	    shift
+	    ;;
+    esac
+done
+
+find ${starting_points[@]} -path "*${label}*" -a -type f
