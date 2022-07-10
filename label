@@ -9,6 +9,22 @@ function print_error()
     printf "%s\n" "$*" 1>&2
 }
 
+# Makes a label to the given target
+#
+# 1 = label
+# 2 = target
+#
+function make_label()
+{
+    mkdir -p $1
+    ln $2 $1
+}
+
+if [ $# -eq 0 ]; then
+    print_error "Usage: label <target> <label>..."
+    exit 1
+fi
+
 target="$1"
 shift
 
@@ -17,7 +33,19 @@ if [ ! -e "$target" ]; then
     exit 1
 fi
 
+if [ -d "$target" ]; then
+    # for each file in the target directory link inside label
+    for FILE in "${target}/*"
+    do
+	if [ ! -d "$FILE" ]; then
+	    for label in "$@"; do
+		make_label "$label" "$FILE"
+	    done
+	fi
+    done
+    exit 0
+fi
+
 for label in "$@"; do
-    mkdir -p "$label"
-    ln "$target" "$label"
+    make_label "$label" "$target"
 done
