@@ -17,7 +17,7 @@ function print_error()
 function make_label()
 {
     mkdir -p $1
-    ln $2 $1
+    ln "$2" $1
 }
 
 if [ $# -eq 0 ]; then
