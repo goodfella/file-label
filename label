@@ -35,13 +35,11 @@ fi
 
 if [ -d "$target" ]; then
     # for each file in the target directory link inside label
-    for FILE in "${target}/*"
+    for FILE in $(find ${target} -maxdepth 1 -type f)
     do
-	if [ ! -d "$FILE" ]; then
-	    for label in "$@"; do
-		make_label "$label" "$FILE"
-	    done
-	fi
+	for label in "$@"; do
+	    make_label "$label" "$FILE"
+	done
     done
     exit 0
 fi
